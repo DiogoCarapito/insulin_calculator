@@ -3,7 +3,7 @@ import pandas as pd
 
 
 def load_data():
-    # read csv
+    """# read csv
     df_insa = pd.read_excel("data/insa_tca.xlsx")
 
     # remove 2nd row a header
@@ -19,7 +19,8 @@ def load_data():
     df_insa["alimento_hc"] = df_insa.apply(lambda row: f"{row['Nome do alimento']} ({row[coluna_hc]}g HC/100g)", axis=1)
 
     return df_insa
-
+    """
+    return pd.read_csv("data/insa_tca_processed.csv")
 
 def formula_insulina(equivalencia_hc_insulina, fator_sensibilidade, alimento):
     return 5
