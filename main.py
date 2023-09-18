@@ -62,14 +62,27 @@ def detalhes_calculo(equivalencia_hc_insulina, fator_sensibilidade, glicemia, gl
 
 def main():
     st.title("Calculadora de Dose de Insulina")
-    st.markdown("##### Ferramenta de apoio ao :blue[cálculo da dose de insulina] a administrar para pessoas com diabetes.")
-    st.write("""
-        Permite:
-        - Correção de glicémia atual
-        - Correção de glicémia atual + Calculo para ingestão de alimentos utizanndo: 
-            - hidratos de carbono ingerido OU
-            - cálculo de hidratos de carbono a partir de uma lista de alimentos
-        """)
+
+    with st.sidebar:
+        st.write("""
+            # Ferramenta de apoio ao :blue[cálculo da dose de insulina] a administrar para pessoas com diabetes
+            Permite:
+            - Correção de glicémia atual
+            - Correção de glicémia atual + Calculo para ingestão de alimentos utizando: 
+                - hidratos de carbono ingerido OU
+                - cálculo de hidratos de carbono a partir de uma lista de alimentos
+            """)
+
+        st.divider()
+
+        st.info("""
+            ### Definições
+            - **Glicémia Actual**: Glicémia medida no momento, por tira ou sensor
+            - **Glicémia Alvo**: Glicémia que se pretende atingir
+            - **Fator Sensibilidade**: Quantidade de mg/dL que a glicémia desce com 1 unidade de insulina. É variável de pessoa para pessoa, e traduz a resistência à insulina. Deve ser calculado pelo médico
+            - **Tendencia da Glicemia**: Tendencia da glicémia (medida pelo sensor), pode estar estável(↔), a subir(↗), a descer (↘), a subir rapidamente (↑) ou a descer rapidamente (↓)
+            - **Equivalencia HC**: Quantidade (gramas) de hidratos de carbono que 1 unidade de insulina consegue metabolizar
+            """)
 
 
     if "lista_alimentos" not in st.session_state: st.session_state["lista_alimentos"] = []
@@ -169,16 +182,6 @@ def main():
             st.session_state["hc"],
         ))
 
-    st.divider()
-
-    st.info("""
-        ### Definições
-        - **Glicémia Actual**: Glicémia medida no momento, por tira ou sensor
-        - **Glicémia Alvo**: Glicémia que se pretende atingir
-        - **Fator Sensibilidade**: Quantidade de mg/dL que a glicémia desce com 1 unidade de insulina. É variável de pessoa para pessoa, e traduz a resistência à insulina. Deve ser calculado pelo médico
-        - **Tendencia da Glicemia**: Tendencia da glicémia (medida pelo sensor), pode estar estável(↔), a subir(↗), a descer (↘), a subir rapidamente (↑) ou a descer rapidamente (↓)
-        - **Equivalencia HC**: Quantidade (gramas) de hidratos de carbono que 1 unidade de insulina consegue metabolizar
-        """)
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
