@@ -32,13 +32,13 @@ def calculo_insulina(equivalencia_hc_insulina, fator_sensibilidade, glicemia, gl
     dose_insulina += formula_insulina_hc(equivalencia_hc_insulina, hidratos_carbono)
 
     # add the correction dose according to the glycemia and the trend
-    if tendencia_glicemia == "⏫":
+    if tendencia_glicemia == "↑ subir rapidamente":
         dose_insulina *= 1.2
-    elif tendencia_glicemia == "↗️":
+    elif tendencia_glicemia == "↗ subir":
         dose_insulina *= 1.1
-    elif tendencia_glicemia == "⏬":
+    elif tendencia_glicemia == "↓ descer rapidamente":
         dose_insulina *= 0.8
-    elif tendencia_glicemia == "↘️":
+    elif tendencia_glicemia == "↘ descer":
         dose_insulina *= 0.9
 
     # round to 1 decimal (maybe 0 is better)
@@ -75,7 +75,7 @@ def main():
     if "fator_sensibilidade" not in st.session_state: st.session_state["fator_sensibilidade"] = 50
     if "glicemia" not in st.session_state: st.session_state["glicemia"] = 200
     if "glicemia_alvo" not in st.session_state: st.session_state["glicemia_alvo"] = 100
-    if "tendencia_glicemia" not in st.session_state: st.session_state["tendencia_glicemia"] = "↔️"
+    if "tendencia_glicemia" not in st.session_state: st.session_state["tendencia_glicemia"] = "↔ estável"
     if "alimento" not in st.session_state: st.session_state["alimento"] = ""
     if "quantidade" not in st.session_state: st.session_state["quantidade"] = 0
     if "hc" not in st.session_state: st.session_state["hc"] = 0
@@ -96,7 +96,7 @@ def main():
 
     with col_3:
         st.session_state["fator_sensibilidade"] = st.number_input("Fator Sensibilidade", value=50, step=5)
-    st.session_state["tendencia_glicemia"] = st.radio("Tendencia da Glicemia", ["⏫", "↗️", "↔️", "↘️", "⏬"], horizontal=True, index=2)
+    st.session_state["tendencia_glicemia"] = st.radio("Tendencia da Glicemia", ["↑ subir rapidamente", "↗ subir", "↔ estável", "↘ descer", "↓ descer rapidamente"], horizontal=True, index=2)
 
     st.divider()
     st.title("Alimentos")
@@ -166,10 +166,9 @@ def main():
         - **Glicémia Actual**: Glicémia medida no momento, por tira ou sensor
         - **Glicémia Alvo**: Glicémia que se pretende atingir
         - **Fator Sensibilidade**: Quantidade de mg/dL que a glicémia desce com 1 unidade de insulina. É variável de pessoa para pessoa, e traduz a resistência à insulina. Deve ser calculado pelo médico
-        - **Tendencia da Glicemia**: Tendencia da glicémia (medida pelo sensor), pode estar estável, a subir, a descer, a subir rapidamente ou a descer rapidamente
+        - **Tendencia da Glicemia**: Tendencia da glicémia (medida pelo sensor), pode estar estável(↔), a subir(↗), a descer (↘), a subir rapidamente (↑) ou a descer rapidamente (↓)
         - **Equivalencia HC**: Quantidade (gramas) de hidratos de carbono que 1 unidade de insulina consegue metabolizar
         """)
-
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
