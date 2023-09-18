@@ -102,8 +102,7 @@ def main():
     lista_alimentos = df_insa["alimento_hc"]
     #st.table(df_insa[["Nome do alimento","Hidratos de carbono [g]"]].head(10))
 
-    st.divider()
-    st.header("1. Correção de glicémia")
+    st.subheader("1. Correção de glicémia")
 
     col_1, col_2, col_3 = st.columns(3)
     with col_1:
@@ -116,7 +115,7 @@ def main():
     st.session_state["tendencia_glicemia"] = st.radio("Tendencia da Glicemia", ["↑ subir rapidamente", "↗ subir", "↔ estável", "↘ descer", "↓ descer rapidamente"], horizontal=True, index=2)
 
     st.divider()
-    st.header("2. Alimentos")
+    st.subheader("2. Alimentos")
 
     st.session_state["alimentos_radio"] = st.radio("Incluir Alimentos no Cálculo", ["Não", "Hidratos de carbono", "Lista de alimentos"], horizontal=True, index=0, label_visibility="collapsed")
 
@@ -158,7 +157,7 @@ def main():
         st.session_state["hc"] = 0
     st.divider()
 
-    st.header("3. Dose de Insulina")
+    st.subheader("3. Dose de Insulina")
 
     insulina = calculo_insulina(
         st.session_state["equivalencia_hc_insulina"],
