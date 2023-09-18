@@ -57,6 +57,9 @@ def calculo_hc(lista_alimentos):
 
     return hc
 
+def detalhes_calculo(equivalencia_hc_insulina, fator_sensibilidade, glicemia, glicemia_alvo, tendencia_glicemia, hidratos_carbono):
+    return None
+
 def main():
     st.title("Calculadora de Dose de Insulina")
     st.markdown("##### Ferramenta de apoio ao :blue[cálculo da dose de insulina] a administrar para pessoas com diabetes.")
@@ -79,6 +82,7 @@ def main():
     if "alimento" not in st.session_state: st.session_state["alimento"] = ""
     if "quantidade" not in st.session_state: st.session_state["quantidade"] = 0
     if "hc" not in st.session_state: st.session_state["hc"] = 0
+    if "alimentos_radio" not in st.session_state: st.session_state["alimentos_radio"] = "Não"
 
     df_insa = load_data()
     # lista de alimentos
@@ -86,7 +90,7 @@ def main():
     #st.table(df_insa[["Nome do alimento","Hidratos de carbono [g]"]].head(10))
 
     st.divider()
-    st.header("Correção de glicémia")
+    st.header("1. Correção de glicémia")
 
     col_1, col_2, col_3 = st.columns(3)
     with col_1:
@@ -99,48 +103,49 @@ def main():
     st.session_state["tendencia_glicemia"] = st.radio("Tendencia da Glicemia", ["↑ subir rapidamente", "↗ subir", "↔ estável", "↘ descer", "↓ descer rapidamente"], horizontal=True, index=2)
 
     st.divider()
-    st.title("Alimentos")
-    if st.checkbox("Incluir Alimentos no Cálculo", value=False):
-        with st.container():
-            st.session_state["equivalencia_hc_insulina"] = st.number_input("Equivalencia HC", value=12, step=1)
+    st.header("2. Alimentos")
 
-            tab_1, tab_2 = st.tabs(["Hidratos Carbono", "Lista de alimentos"])
+    st.session_state["alimentos_radio"] = st.radio("Incluir Alimentos no Cálculo", ["Não", "Hidratos de carbono", "Lista de alimentos"], horizontal=True, index=0, label_visibility="collapsed")
 
-            with tab_1:
-                st.session_state["hc"] = st.number_input("Hidratos de Carbono (g)", value=0, step=1)
+    if st.session_state["alimentos_radio"] != "Não":
+        st.session_state["equivalencia_hc_insulina"] = st.number_input("Equivalencia HC", value=12, step=1)
 
-            with tab_2:
+    if st.session_state["alimentos_radio"] == "Hidratos de carbono":
+        st.session_state["hc"] = 0
+        st.session_state["hc"] = st.number_input("Hidratos de Carbono (g)", value=0, step=1)
 
-                col_5, col_6 = st.columns(2)
+    if st.session_state["alimentos_radio"] == "Lista de alimentos":
+        st.session_state["hc"] = 0
+        col_5, col_6 = st.columns(2)
+        with col_5:
+            st.session_state["alimento"] = st.selectbox("Alimento", lista_alimentos, index=0)
+        with col_6:
+            st.session_state["quantidade"] = st.number_input("Quantidade (g)", value=50, step=5)
 
-                with col_5:
-                    st.session_state["alimento"] = st.selectbox("Alimento", lista_alimentos, index=0)
-                with col_6:
-                    st.session_state["quantidade"] = st.number_input("Quantidade (g)", value=50, step=5)
-                col_but_1, col_but_2 = st.columns(2)
-                with col_but_1:
-                    if st.button("adicionar alimento", type="secondary"):
-                        st.session_state["lista_alimentos"].append(
-                            {
-                                "Alimento": st.session_state["alimento"],
-                                "Quantidade": st.session_state["quantidade"],
-                            }
-                        )
-                with col_but_2:
-                    if st.button("limpar lista", type="primary"):
-                        st.session_state["lista_alimentos"] = []
+        col_but_1, col_but_2 = st.columns(2)
+        with col_but_1:
+            if st.button("adicionar alimento", type="secondary"):
+                st.session_state["lista_alimentos"].append(
+                    {
+                        "Alimento": st.session_state["alimento"],
+                        "Quantidade": st.session_state["quantidade"],
+                    }
+                )
+        with col_but_2:
+            if st.button("limpar lista", type="primary"):
+                st.session_state["lista_alimentos"] = []
 
-                st.write("Lista de alimentos")
-                if len(st.session_state["lista_alimentos"]) != 0:
-                    st.session_state["lista_alimentos"] = st.data_editor(st.session_state["lista_alimentos"])
-                    st.session_state["hc"] = calculo_hc(st.session_state["lista_alimentos"])
-    else:
+        st.write("Lista de alimentos")
+        if len(st.session_state["lista_alimentos"]) != 0:
+            st.session_state["lista_alimentos"] = st.data_editor(st.session_state["lista_alimentos"])
+            st.session_state["hc"] = calculo_hc(st.session_state["lista_alimentos"])
+
+    if st.session_state["alimentos_radio"] == "Não":
         # reset hc se não existir alimentos (checkbox desmarcado)
         st.session_state["hc"] = 0
-
     st.divider()
 
-    st.title("Dose de Insulina")
+    st.header("3. Dose de Insulina")
 
     insulina = calculo_insulina(
         st.session_state["equivalencia_hc_insulina"],
@@ -152,12 +157,17 @@ def main():
     )
 
 
-    st.metric("Dose Insulina", insulina,)
+    st.metric("Dose Insulina", insulina)
 
-    with st.expander("Detalhes calculo"):
-        st.write("""
-            The dose of insulin is calculated by summing the amount of insulin for each food and adding the correction dose according to the glycemia and the trend.
-            """)
+    with st.expander("Detalhes de cálculo"):
+        st.write(detalhes_calculo(
+            st.session_state["equivalencia_hc_insulina"],
+            st.session_state["fator_sensibilidade"],
+            st.session_state["glicemia"],
+            st.session_state["glicemia_alvo"],
+            st.session_state["tendencia_glicemia"],
+            st.session_state["hc"],
+        ))
 
     st.divider()
 
