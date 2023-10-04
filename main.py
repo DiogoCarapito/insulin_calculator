@@ -93,7 +93,7 @@ def main():
     )
 
     st.divider()
-    st.subheader(":blue[2. Alimentos]")
+    st.subheader(":blue[2. Alimentos (opcional)]")
 
     st.session_state["alimentos_radio"] = st.radio(
         "Incluir Alimentos no Cálculo",
