@@ -151,7 +151,7 @@ def main():
         st.session_state["hc"] = 0
     st.divider()
 
-    st.subheader(":blue[3. Dose de Insulina]")
+    st.subheader(":blue[**Dose de Insulina**]")
 
     insulina = calculo_insulina(
         st.session_state["equivalencia_hc_insulina"],
