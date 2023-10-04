@@ -21,9 +21,9 @@ df_insa["alimento_hc"] = df_insa.apply(
 df_insa.to_csv("insa_tca_processed.csv", index=False)
 
 # create a new dataframe with the food name and the HC per 100g
-df_insa_hc = df_insa[["Nome do alimento", 'Hidratos de carbono \n[g]']]
+df_insa_hc = df_insa[["Nome do alimento", "Hidratos de carbono \n[g]"]]
 
-#print(df_insa.columns)
+# print(df_insa.columns)
 
 # Save the dataframe to a csv file
 df_insa_hc.to_csv("insa_lista_alimentos_hidratos.csv", index=False)
