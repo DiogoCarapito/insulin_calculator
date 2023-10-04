@@ -1,4 +1,4 @@
-from utils.utils import calculo_insulina
+from main import calculo_insulina
 
 
 def test_calculo_insulina():
