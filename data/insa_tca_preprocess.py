@@ -13,6 +13,8 @@ df_insa = df_insa.iloc[1:]
 coluna_hc = df_insa.columns[13]
 
 # create a new column with the name of the food and the HC per 100g
-df_insa["alimento_hc"] = df_insa.apply(lambda row: f"{row['Nome do alimento']} ({row[coluna_hc]}g HC/100g)", axis=1)
+df_insa["alimento_hc"] = df_insa.apply(
+    lambda row: f"{row['Nome do alimento']} ({row[coluna_hc]}g HC/100g)", axis=1
+)
 
 df_insa.to_csv("insa_tca_processed.csv", index=False)
