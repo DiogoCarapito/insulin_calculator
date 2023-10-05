@@ -1,6 +1,10 @@
 import pandas as pd
 
 
+def load_data():
+    return pd.read_csv("data/insa_tca_processed.csv")
+
+
 def formula_insulina_hc(equivalencia_hc_insulina, hc):
     insulina_para_correcao = hc / equivalencia_hc_insulina
 
