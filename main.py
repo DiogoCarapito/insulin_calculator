@@ -11,11 +11,22 @@ def main():
         st.write(
             """
             # Ferramenta de apoio ao :blue[cálculo da dose de insulina] a administrar para pessoas com diabetes
-            Permite:
-            - Correção de glicémia atual
-            - Correção de glicémia atual + Calculo para ingestão de alimentos utizando: 
-                - hidratos de carbono ingerido OU
-                - cálculo de hidratos de carbono a partir de uma lista de alimentos
+            
+            ## Permite cálculo de dose de insulina com:
+            - **1. Correção de glicémia** apenas
+            
+            - **1. Correção de glicémia** + **2. Correção para alimentos**, utizando: 
+                - **Hidratos de carbono** ingeridos *OU*
+                - **Lista de alimentos** com calculo automático de hidratos de carbono
+            
+            
+            ## A dose de insulina cálculada tem em consideração vários fatores:
+            - Glicémia Actual
+            - Glicémia Alvo
+            - Fator de Sensibilidade
+            - Tendência da Glicémia
+            - Equivalência de hidratos de carbono
+            - Quantidade de hidratos de carbono ingeridos 
             """
         )
 
@@ -24,10 +35,15 @@ def main():
         st.info(
             """
             ### Definições
-            - **Glicémia Actual**: Glicémia medida no momento, por tira ou sensor
+            
+            - **Glicémia Actual**: Glicémia medida no momento, por tira ou sensor. Deve ser medida antes de cada refeição e antes de dormir. Permite avaliar a necessidade de correção de glicémia.
+            
             - **Glicémia Alvo**: Glicémia que se pretende atingir
-            - **Fator Sensibilidade**: Quantidade de mg/dL que a glicémia desce com 1 unidade de insulina. É variável de pessoa para pessoa, e traduz a resistência à insulina. Deve ser calculado pelo médico
-            - **Tendencia da Glicemia**: Tendencia da glicémia (medida pelo sensor), pode estar estável(↔), a subir(↗), a descer (↘), a subir rapidamente (↑) ou a descer rapidamente (↓)
+            
+            - **Fator Sensibilidade**: Quantidade de mg/dL que a glicémia desce com 1 unidade de insulina. É variável de pessoa para pessoa, e traduz a resistência à insulina. Deve ser calculado pelo médico assistente por definição é considerada 50
+            
+            - **Tendencia da Glicemia**: Tendencia da glicémia (medida pelo sensor), pode estar estável(↔), a subir(↗), a descer (↘), a subir rapidamente (↑) ou a descer rapidamente (↓). A Tendencia da glicémia permite ajustar a dose de insulina e aplicar um fator de correção
+            
             - **Equivalencia HC**: Quantidade (gramas) de hidratos de carbono que 1 unidade de insulina consegue metabolizar
             """
         )
@@ -192,10 +208,12 @@ def main():
     if st.session_state["alimentos_radio"] == "Não":
         # reset hc se não existir alimentos (checkbox desmarcado)
         st.session_state["hc"] = 0
+
     st.divider()
 
-    st.subheader(":green[Dose de Insulina a administrar]")
+    st.subheader(":blue[3. Dose de Insulina]")
 
+    # calculo de dose de insulina
     insulina = calculo_insulina(
         st.session_state["equivalencia_hc_insulina"],
         st.session_state["fator_sensibilidade"],
@@ -205,8 +223,10 @@ def main():
         st.session_state["hc"],
     )
 
+    # informação de dose de insulina
     st.metric("Dose Insulina", insulina)
 
+    # detalhes de cálculo
     with st.expander("Detalhes de cálculo"):
         st.write(
             detalhes_calculo(
@@ -218,6 +238,23 @@ def main():
                 st.session_state["hc"],
             )
         )
+
+    # Disclaimer
+    st.info(
+        """
+        ### IMPORTANTE
+        
+        Esta é uma ferramenta experimental em desenvolvimento. Confira sempre os cálculos.
+        
+        Confirme sempre com o médico ou enfermeiro assistente a dose de insulina a administrar.
+        
+        Não substitui a consulta com o médico assistente.
+        
+        No caso de dúvida, siga as indicações do seu médico ou enfermeiro assistente.
+        
+        """
+    )
+
 
 
 # Press the green button in the gutter to run the script.
