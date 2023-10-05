@@ -5,6 +5,10 @@ def load_data():
     return pd.read_csv("data/insa_tca_processed.csv")
 
 
+def load_data_hidratos_carbono():
+    return pd.read_csv("data/insa_lista_alimentos_hidratos.csv")
+
+
 def formula_insulina_hc(equivalencia_hc_insulina, hc):
     insulina_para_correcao = hc / equivalencia_hc_insulina
 
