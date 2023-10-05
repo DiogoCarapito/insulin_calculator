@@ -2,10 +2,6 @@ import pandas as pd
 
 
 def load_data():
-    return pd.read_csv("data/insa_tca_processed.csv")
-
-
-def load_data_hidratos_carbono():
     return pd.read_csv("data/insa_lista_alimentos_hidratos.csv")
 
 

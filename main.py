@@ -42,7 +42,7 @@ def main():
             
             - **Fator Sensibilidade**: Quantidade de mg/dL que a glicémia desce com 1 unidade de insulina. É variável de pessoa para pessoa, e traduz a resistência à insulina. Deve ser calculado pelo médico assistente por definição é considerada 50
             
-            - **Tendencia da Glicemia**: Tendencia da glicémia (medida pelo sensor), pode estar estável(↔), a subir(↗), a descer (↘), a subir rapidamente (↑) ou a descer rapidamente (↓). A Tendencia da glicémia permite ajustar a dose de insulina e aplicar um fator de correção
+            - **Tendencia da Glicemia**: Tendencia da glicémia (medida pelo sensor), pode estar estável (↔), a subir (↗), a descer (↘), a subir rapidamente (↑) ou a descer rapidamente (↓). A Tendência da glicémia permite ajustar a dose de insulina e aplicar um fator de correção
             
             - **Equivalencia HC**: Quantidade (gramas) de hidratos de carbono que 1 unidade de insulina consegue metabolizar
             """
@@ -86,8 +86,8 @@ def main():
         st.session_state["quantidade"] = 0
 
     # hidratos carbono
-    if "hc" not in st.session_state:
-        st.session_state["hc"] = 0
+    if "hidratos_carbono" not in st.session_state:
+        st.session_state["hidratos_carbono"] = 0
 
     # radio se alimentos estão selecionados ou não
     if "alimentos_radio" not in st.session_state:
@@ -97,7 +97,7 @@ def main():
     df_insa = load_data()
 
     # lista de alimentos
-    lista_alimentos = df_insa["alimento_hc"]
+    lista_alimentos = df_insa["Nome do alimento"].unique().tolist()
 
     st.subheader(":blue[1. Correção de glicémia]")
 
@@ -158,15 +158,15 @@ def main():
     # se só informação de hidratos de carbono totais
     if st.session_state["alimentos_radio"] == "Hidratos de carbono":
         # reset hidratos carbono
-        st.session_state["hc"] = 0
+        st.session_state["hidratos_carbono"] = 0
         # input hidratos de carbono
-        st.session_state["hc"] = st.number_input(
+        st.session_state["hidratos_carbono"] = st.number_input(
             "Hidratos de Carbono (g)", value=0, step=1
         )
     # se opºção de introdução de lista de alimentos
     if st.session_state["alimentos_radio"] == "Lista de alimentos":
         # reset hidratos carbono
-        st.session_state["hc"] = 0
+        st.session_state["hidratos_carbono"] = 0
 
         col_5, col_6 = st.columns(2)
         with col_5:
@@ -179,21 +179,14 @@ def main():
             st.session_state["quantidade"] = st.number_input(
                 "Quantidade (g)", value=50, step=5
             )
-
-        col_but_1, col_but_2 = st.columns(2)
-        with col_but_1:
-            # botão para adicionar alimento à lista de alimentos
-            if st.button("adicionar alimento", type="secondary"):
-                st.session_state["lista_alimentos"].append(
-                    {
-                        "Alimento": st.session_state["alimento"],
-                        "Quantidade": st.session_state["quantidade"],
-                    }
-                )
-        with col_but_2:
-            # botão para limpar lista de alimentos
-            if st.button("limpar lista", type="primary"):
-                st.session_state["lista_alimentos"] = []
+        # botão para adicionar alimento à lista de alimentos
+        if st.button("adicionar alimento", type="secondary"):
+            st.session_state["lista_alimentos"].append(
+                {
+                    "Alimento": st.session_state["alimento"],
+                    "Quantidade": st.session_state["quantidade"],
+                }
+            )
 
         # mostar lista de alimentos se existirem aliemntos na lista
         st.write("Lista de alimentos")
@@ -202,12 +195,18 @@ def main():
             st.session_state["lista_alimentos"] = st.data_editor(
                 st.session_state["lista_alimentos"]
             )
-            st.session_state["hc"] = calculo_hc(st.session_state["lista_alimentos"])
+            st.session_state["hidratos_carbono"] = calculo_hc(
+                st.session_state["lista_alimentos"]
+            )
+
+        # botão para limpar lista de alimentos
+        if st.button("limpar lista de alimentos", type="primary"):
+            st.session_state["lista_alimentos"] = []
 
     # caso não se queira calcular com aliemtnos
     if st.session_state["alimentos_radio"] == "Não":
         # reset hc se não existir alimentos (checkbox desmarcado)
-        st.session_state["hc"] = 0
+        st.session_state["hidratos_carbono"] = 0
 
     st.divider()
 
@@ -220,7 +219,7 @@ def main():
         st.session_state["glicemia"],
         st.session_state["glicemia_alvo"],
         st.session_state["tendencia_glicemia"],
-        st.session_state["hc"],
+        st.session_state["hidratos_carbono"],
     )
 
     # informação de dose de insulina
@@ -235,7 +234,7 @@ def main():
                 st.session_state["glicemia"],
                 st.session_state["glicemia_alvo"],
                 st.session_state["tendencia_glicemia"],
-                st.session_state["hc"],
+                st.session_state["hidratos_carbono"],
             )
         )
 
@@ -246,7 +245,7 @@ def main():
         
         Esta é uma ferramenta experimental em desenvolvimento. Confira sempre os cálculos.
         
-        Confirme sempre com o médico ou enfermeiro assistente a dose de insulina a administrar.
+        Confirme sempre com o médico ou enfermeiro assistente as instruções para administrações de insulina .
         
         Não substitui a consulta com o médico assistente.
         
@@ -255,6 +254,11 @@ def main():
         """
     )
 
+    st.write(
+        """
+        ## Bibliografia
+        """
+    )
 
 
 # Press the green button in the gutter to run the script.
