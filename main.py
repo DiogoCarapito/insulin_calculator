@@ -10,7 +10,7 @@ def main():
     with st.sidebar:
         st.write(
             """
-            # Ferramenta de apoio ao :blue[cálculo da dose de insulina] a administrar para pessoas com diabetes
+            # Ferramenta de apoio ao :blue[cálculo da dose de insulina rápida] a administrar para pessoas com diabetes
             
             ## Permite cálculo de dose de insulina com:
             - **1. Correção de glicémia** apenas
@@ -223,9 +223,12 @@ def main():
     )
 
     # informação de dose de insulina
-    st.metric("Dose Insulina", insulina)
+    st.write(f"""
+    ### {insulina} unidades
+    """)
 
-    # detalhes de cálculo
+
+    # detalhes de cálculo em expander
     with st.expander("Detalhes de cálculo"):
         st.write(
             detalhes_calculo(
@@ -238,14 +241,17 @@ def main():
             )
         )
 
+    st.divider()
+
     # Disclaimer
+    st.write("## IMPORTANTE")
     st.info(
         """
-        ### IMPORTANTE
+        
         
         Esta é uma ferramenta experimental em desenvolvimento. Confira sempre os cálculos.
         
-        Confirme sempre com o médico ou enfermeiro assistente as instruções para administrações de insulina .
+        Confirme sempre com o médico ou enfermeiro assistente as instruções para administrações de insulina.
         
         Não substitui a consulta com o médico assistente.
         
@@ -254,12 +260,6 @@ def main():
         """
     )
 
-    st.write(
-        """
-        ## Bibliografia
-        1. 
-        """
-    )
 
 
 # Press the green button in the gutter to run the script.
