@@ -85,7 +85,7 @@ def detalhes_calculo(
     insulina_correção_glicémia = correcao_glicemia(fator_sensibilidade, glicemia, glicemia_alvo)
 
     calculos_correcao_glicemia = f"""
-#### A. Correção de Glicémia
+#### 1. Correção de Glicémia
 
 Fórmula:
 
@@ -106,7 +106,7 @@ dose_insulina = {insulina_correção_glicémia}
     
 """
     calculos_corrrecao_alimentos = """
-#### B. Correção de Alimentos
+#### 2. Correção de Alimentos
 """
     if hidratos_carbono != 0:
         dose_adicional_alimentos = round(formula_insulina_hc(equivalencia_hc_insulina, hidratos_carbono), 2)
@@ -138,7 +138,7 @@ dose_insulina = {insulina_correção_glicémia} + {dose_adicional_alimentos}
     dose_final_insulina_round = round(dose_final_insulina, 1)
 
     calculos_correrecao_tendencia = f"""
-#### C. Correção de Tendência
+#### 3. Correção de Tendência
 Fator de correção consoante a têndiencia da glicémia:
 - ↔ estável: não alterar
 - ↗ subir: aumentar 10%

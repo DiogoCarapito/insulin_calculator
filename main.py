@@ -12,7 +12,7 @@ def main():
             """
             # Ferramenta de apoio ao :blue[cálculo da dose de insulina rápida] a administrar para pessoas com diabetes
             
-            ## Permite cálculo de dose de insulina com:
+            ## Permite calculo de dose de insulina com:
             - **1. Correção de glicémia** apenas
             
             - **1. Correção de glicémia** + **2. Correção para alimentos**, utizando: 
@@ -20,7 +20,7 @@ def main():
                 - **Lista de alimentos** com calculo automático de hidratos de carbono
             
             
-            ## A dose de insulina cálculada tem em consideração vários fatores:
+            ## A dose de insulina calculada tem em consideração vários fatores:
             - Glicémia Actual
             - Glicémia Alvo
             - Fator de Sensibilidade
