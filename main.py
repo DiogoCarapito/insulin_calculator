@@ -185,6 +185,8 @@ def main():
                 {
                     "Alimento": st.session_state["alimento"],
                     "Quantidade": st.session_state["quantidade"],
+                    "Hidratos de Carbono/100g": df_insa[df_insa["Nome do alimento"] == st.session_state["alimento"]][
+            df_insa.columns[1]].values[0]
                 }
             )
 
