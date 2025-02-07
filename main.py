@@ -17,7 +17,7 @@ def main():
             
             - **1. Correção de glicémia** + **2. Correção para alimentos**, utizando: 
                 - **Hidratos de carbono** ingeridos *OU*
-                - **Lista de alimentos** com calculo automático de hidratos de carbono
+                - **Lista de alimentos** com calculo automático de hidratos de carbono (Fonte: [PortFIR-INSA](https://portfir-insa.min-saude.pt))
             
             
             ## A dose de insulina calculada tem em consideração vários fatores:
